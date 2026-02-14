@@ -1,12 +1,811 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>СтройконтрольИмастер — Цифровой помощник для строительства</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>СтройконтрольИмастер — Цифровой помощник для строительства</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] } } }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    * { font-family: 'Inter', system-ui, sans-serif; }
+    html { scroll-behavior: smooth; }
+    .gradient-text-orange { background: linear-gradient(to right, #fb923c, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .gradient-text-amber { background: linear-gradient(to right, #f59e0b, #eab308); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .gradient-text-red { background: linear-gradient(to right, #ef4444, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .gradient-text-violet { background: linear-gradient(to right, #8b5cf6, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-up { animation: fadeUp 0.7s ease-out forwards; }
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
+    .delay-400 { animation-delay: 400ms; }
+    .pain-card { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+    .pain-card.visible { opacity: 1; transform: translateY(0); }
+    .pain-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -12px rgba(251, 146, 60, 0.15); }
+    .feature-card { transition: all 0.5s ease; }
+    .feature-card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1); }
+    .btn-primary { background: linear-gradient(to right, #f97316, #f59e0b); }
+    .btn-primary:hover { box-shadow: 0 20px 40px -8px rgba(249, 115, 22, 0.4); transform: translateY(-2px); }
+    input:focus, textarea:focus { border-color: #fb923c !important; box-shadow: 0 0 0 4px rgba(251, 146, 60, 0.1) !important; }
+  </style>
+</head>
+<body class="min-h-screen bg-white text-slate-900 antialiased">
+  <!-- ═══════════ HEADER ═══════════ -->
+  <header id="header" class="fixed inset-x-0 top-0 z-50 transition-all duration-300">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <a href="#hero" class="flex items-center gap-2.5">
+        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 shadow-lg shadow-orange-200">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a6 6 0 0 1 6-6h0"/><path d="M14 6a6 6 0 0 1 6 6v3"/></svg>
+        </div>
+        <div class="hidden sm:block">
+          <span class="gradient-text-orange text-lg font-extrabold tracking-tight">Стройконтроль</span><span class="gradient-text-amber text-lg font-extrabold tracking-tight">Им��стер</span>
+        </div>
+      </a>
+      <nav class="hidden items-center gap-1 md:flex">
+        <a href="#about" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-orange-50 hover:text-orange-600">О приложении</a>
+        <a href="#problems" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-orange-50 hover:text-orange-600">Проблемы</a>
+        <a href="#features" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-orange-50 hover:text-orange-600">Возможности</a>
+        <a href="#participate" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-orange-50 hover:text-orange-600">Участие</a>
+        <a href="#contact" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-orange-50 hover:text-orange-600">Контакты</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a href="#contact" class="hidden rounded-xl btn-primary px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-orange-200 transition-all md:block">Связаться с нами</a>
+        <button onclick="toggleMobileMenu()" class="rounded-lg p-2 text-slate-700 md:hidden" id="menuBtn">
+          <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          <svg id="closeIcon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden border-t border-slate-100 bg-white/95 backdrop-blur-xl md:hidden">
+      <div class="flex flex-col gap-1 p-4">
+        <a href="#about" onclick="closeMobileMenu()" class="rounded-lg px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-orange-50 hover:text-orange-600">О приложении</a>
+        <a href="#problems" onclick="closeMobileMenu()" class="rounded-lg px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-orange-50 hover:text-orange-600">Проблемы</a>
+        <a href="#features" onclick="closeMobileMenu()" class="rounded-lg px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-orange-50 hover:text-orange-600">Возможности</a>
+        <a href="#participate" onclick="closeMobileMenu()" class="rounded-lg px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-orange-50 hover:text-orange-600">Участие</a>
+        <a href="#contact" onclick="closeMobileMenu()" class="rounded-lg px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-orange-50 hover:text-orange-600">Контакты</a>
+        <a href="#contact" onclick="closeMobileMenu()" class="mt-2 rounded-xl btn-primary px-5 py-3 text-center text-sm font-semibold text-white">Связаться с нами</a>
+      </div>
+    </div>
+  </header>
+  <!-- ═══════════ HERO ═══════════ -->
+  <section id="hero" class="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div class="absolute inset-0">
+      <div class="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-orange-500/10 blur-[120px]"></div>
+      <div class="absolute bottom-1/4 right-1/4 h-80 w-80 rounded-full bg-amber-500/10 blur-[100px]"></div>
+    </div>
+    <div class="relative mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-4 pt-20 sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-orange-400/30 bg-orange-500/10 px-4 py-2 backdrop-blur-sm animate-fade-up">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span class="text-sm font-medium text-orange-300">Приложение в разработке — участвуйте!</span>
+      </div>
+      <h1 class="max-w-5xl text-center text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl animate-fade-up delay-100">
+        <span class="gradient-text-orange">Стройконтроль</span><span class="text-orange-400">И</span><span class="gradient-text-amber">мастер</span>
+      </h1>
+      <p class="mt-6 max-w-3xl text-center text-lg leading-relaxed text-slate-300 sm:text-xl md:text-2xl animate-fade-up delay-200">
+        Цифровой помощник для строительства: лёгкий операционный контроль, учёт материалов и инструмента, координация всех участников
+      </p>
+      <div class="mt-8 grid grid-cols-2 gap-3 sm:flex sm:gap-4 md:mt-10 animate-fade-up delay-300">
+        <div class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+          <span class="text-sm font-medium text-white">Контроль</span>
+        </div>
+        <div class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          <span class="text-sm font-medium text-white">Учёт</span>
+        </div>
+        <div class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="text-sm font-medium text-white">Координация</span>
+        </div>
+        <div class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+          <span class="text-sm font-medium text-white">Технология</span>
+        </div>
+      </div>
+      <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row md:mt-12 animate-fade-up delay-400">
+        <a href="#contact" class="group flex items-center gap-2 rounded-2xl btn-primary px-8 py-4 text-lg font-bold text-white shadow-2xl shadow-orange-500/30 transition-all">
+          Принять участие
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#about" class="flex items-center gap-2 rounded-2xl border border-white/20 px-8 py-4 text-lg font-semibold text-white transition-all hover:bg-white/10">
+          Узнать больше
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </a>
+      </div>
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+    </div>
+  </section>
+  <!-- ═══════════ ABOUT ═══════════ -->
+  <section id="about" class="relative py-20 md:py-28 bg-gradient-to-b from-white to-slate-50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <span class="inline-flex items-center gap-2 rounded-full bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-600">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          О приложении
+        </span>
+        <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+          Оцифруем <span class="gradient-text-orange">хаос</span> на стройке
+        </h2>
+        <p class="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
+          Работа с ручкой и блокнотом, группами в WhatsApp или Telegram — это не инструмент уже давно. Мы создаём приложение, которое изменит подход к управлению строительством.
+        </p>
+      </div>
+      <div class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div class="feature-card group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-8 shadow-sm">
+          <div class="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-slate-50 to-slate-100 transition-transform group-hover:scale-[2]"></div>
+          <div class="relative">
+            <div class="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <h3 class="mb-2 text-lg font-bold text-slate-900">Операционный контроль</h3>
+            <p class="text-sm leading-relaxed text-slate-600">Лёгкий контроль для технадзора и мастера. Все процессы на ладони — от предписаний до исполнения.</p>
+          </div>
+        </div>
+        <div class="feature-card group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-8 shadow-sm">
+          <div class="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-slate-50 to-slate-100 transition-transform group-hover:scale-[2]"></div>
+          <div class="relative">
+            <div class="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+            </div>
+            <h3 class="mb-2 text-lg font-bold text-slate-900">Учёт материалов</h3>
+            <p class="text-sm leading-relaxed text-slate-600">Учёт инструмента, расходников и основного материала. Контроль лимитов и заявок.</p>
+          </div>
+        </div>
+        <div class="feature-card group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-8 shadow-sm">
+          <div class="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-slate-50 to-slate-100 transition-transform group-hover:scale-[2]"></div>
+          <div class="relative">
+            <div class="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h3 class="mb-2 text-lg font-bold text-slate-900">Координация участников</h3>
+            <p class="text-sm leading-relaxed text-slate-600">Лёгкая координация всех участников строительства — от бригадира до директора.</p>
+          </div>
+        </div>
+        <div class="feature-card group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-8 shadow-sm">
+          <div class="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-slate-50 to-slate-100 transition-transform group-hover:scale-[2]"></div>
+          <div class="relative">
+            <div class="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+            </div>
+            <h3 class="mb-2 text-lg font-bold text-slate-900">Соблюдение технологии</h3>
+            <p class="text-sm leading-relaxed text-slate-600">Помощь в соблюдении технологии строительства. Не дадим забыть ни одного пункта.</p>
+          </div>
+        </div>
+        <div class="feature-card group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-8 shadow-sm">
+          <div class="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-slate-50 to-slate-100 transition-transform group-hover:scale-[2]"></div>
+          <div class="relative">
+            <div class="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-sky-600 text-white shadow-lg shadow-cyan-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <h3 class="mb-2 text-lg font-bold text-slate-900">Исполнительная документация</h3>
+            <p class="text-sm leading-relaxed text-slate-600">Своевременная укомплектованность исполнительной документации в цифровом формате.</p>
+          </div>
+        </div>
+        <div class="feature-card group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-8 shadow-sm">
+          <div class="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-slate-50 to-slate-100 transition-transform group-hover:scale-[2]"></div>
+          <div class="relative">
+            <div class="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-rose-500 to-pink-600 text-white shadow-lg shadow-rose-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <h3 class="mb-2 text-lg font-bold text-slate-900">Протоколы и задачи</h3>
+            <p class="text-sm leading-relaxed text-slate-600">Ведение протоколов совещаний, контроль задач и временных регламентов сотрудников.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ═══════════ STATS ═══════════ -->
+  <section class="relative overflow-hidden bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-16">
+    <div class="absolute inset-0"><div class="absolute left-0 top-0 h-full w-1/2 bg-gradient-to-r from-orange-500/5 to-transparent"></div></div>
+    <div class="relative mx-auto grid max-w-7xl gap-8 px-4 sm:grid-cols-2 lg:grid-cols-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <div class="text-4xl font-extrabold text-orange-400 md:text-5xl counter" data-target="15" data-suffix="+">0+</div>
+        <p class="mt-2 text-sm text-slate-400">Лет опыта в строительстве</p>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl font-extrabold text-orange-400 md:text-5xl counter" data-target="100" data-suffix="+">0+</div>
+        <p class="mt-2 text-sm text-slate-400">Решаемых проблем</p>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl font-extrabold text-orange-400 md:text-5xl counter" data-target="50" data-suffix="+">0+</div>
+        <p class="mt-2 text-sm text-slate-400">Функций приложения</p>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl font-extrabold text-orange-400 md:text-5xl counter" data-target="24" data-suffix="/7">0/7</div>
+        <p class="mt-2 text-sm text-slate-400">Контроль процессов</p>
+      </div>
+    </div>
+  </section>
+  <!-- ═══════════ PROBLEMS ═══════════ -->
+  <section id="problems" class="relative py-20 md:py-28 bg-gradient-to-b from-slate-50 to-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <span class="inline-flex items-center gap-2 rounded-full bg-red-50 px-4 py-2 text-sm font-semibold text-red-600">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          Знакомые проблемы?
+        </span>
+        <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+          «Боли» строительного <span class="gradient-text-red">процесса</span>
+        </h2>
+        <p class="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
+          Когда всё держится на «одном» человеке — это не система. Заболел, уволился, ушёл в отпуск — и все «головняки» на директоре.
+        </p>
+      </div>
+      <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="painCards">
+        <div class="pain-card group relative overflow-hidden rounded-2xl border border-orange-100 bg-white p-6 shadow-sm">
+          <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-orange-50 to-amber-50 transition-transform group-hover:scale-150"></div>
+          <div class="relative flex items-start gap-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-700 md:text-base">Регламент не выполняется сотрудниками — нет контроля и фиксации нарушений</p>
+          </div>
+        </div>
+        <div class="pain-card group relative overflow-hidden rounded-2xl border border-orange-100 bg-white p-6 shadow-sm">
+          <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-orange-50 to-amber-50 transition-transform group-hover:scale-150"></div>
+          <div class="relative flex items-start gap-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-700 md:text-base">Предписания игнорируются — нет системы отслеживания реакции и устранения замечаний</p>
+          </div>
+        </div>
+        <div class="pain-card group relative overflow-hidden rounded-2xl border border-orange-100 bg-white p-6 shadow-sm">
+          <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-orange-50 to-amber-50 transition-transform group-hover:scale-150"></div>
+          <div class="relative flex items-start gap-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-700 md:text-base">Нет чёткого учёта выдачи расходников и основного материала — постоянные потери</p>
+          </div>
+        </div>
+        <div class="pain-card group relative overflow-hidden rounded-2xl border border-orange-100 bg-white p-6 shadow-sm">
+          <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-orange-50 to-amber-50 transition-transform group-hover:scale-150"></div>
+          <div class="relative flex items-start gap-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-700 md:text-base">Заявки несвоевременны, перерасход по лимиткам — деньги утекают</p>
+          </div>
+        </div>
+        <div class="pain-card group relative overflow-hidden rounded-2xl border border-orange-100 bg-white p-6 shadow-sm">
+          <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-orange-50 to-amber-50 transition-transform group-hover:scale-150"></div>
+          <div class="relative flex items-start gap-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-700 md:text-base">Исполнительная документация не укомплектована и сдаётся с задержками</p>
+          </div>
+        </div>
+        <div class="pain-card group relative overflow-hidden rounded-2xl border border-orange-100 bg-white p-6 shadow-sm">
+          <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-orange-50 to-amber-50 transition-transform group-hover:scale-150"></div>
+          <div class="relative flex items-start gap-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-700 md:text-base">Протоколы совещаний не ведутся, задачи не фиксируются и не контролируются</p>
+          </div>
+        </div>
+        <div class="pain-card group relative overflow-hidden rounded-2xl border border-orange-100 bg-white p-6 shadow-sm">
+          <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-orange-50 to-amber-50 transition-transform group-hover:scale-150"></div>
+          <div class="relative flex items-start gap-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-700 md:text-base">Временной регламент не соблюдается — опоздания, простои, срывы сроков</p>
+          </div>
+        </div>
+        <div class="pain-card group relative overflow-hidden rounded-2xl border border-orange-100 bg-white p-6 shadow-sm">
+          <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-orange-50 to-amber-50 transition-transform group-hover:scale-150"></div>
+          <div class="relative flex items-start gap-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-700 md:text-base">Пункты договора с заказчиком не отслеживаются — риск штрафов и конфликтов</p>
+          </div>
+        </div>
+        <div class="pain-card group relative overflow-hidden rounded-2xl border border-orange-100 bg-white p-6 shadow-sm">
+          <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-orange-50 to-amber-50 transition-transform group-hover:scale-150"></div>
+          <div class="relative flex items-start gap-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-700 md:text-base">Работа геодезиста не синхронизирована с общим графиком строительства</p>
+          </div>
+        </div>
+        <div class="pain-card group relative overflow-hidden rounded-2xl border border-orange-100 bg-white p-6 shadow-sm">
+          <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-orange-50 to-amber-50 transition-transform group-hover:scale-150"></div>
+          <div class="relative flex items-start gap-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-700 md:text-base">Координация между бригадами и подрядчиками — хаос в мессенджерах</p>
+          </div>
+        </div>
+        <div class="pain-card group relative overflow-hidden rounded-2xl border border-orange-100 bg-white p-6 shadow-sm">
+          <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-orange-50 to-amber-50 transition-transform group-hover:scale-150"></div>
+          <div class="relative flex items-start gap-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-700 md:text-base">Технология строительства нарушается — нет напоминаний и чек-листов</p>
+          </div>
+        </div>
+        <div class="pain-card group relative overflow-hidden rounded-2xl border border-orange-100 bg-white p-6 shadow-sm">
+          <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br from-orange-50 to-amber-50 transition-transform group-hover:scale-150"></div>
+          <div class="relative flex items-start gap-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-700 md:text-base">Ручка, блокнот и WhatsApp — это не инструмент управления стройкой</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ═══════════ FEATURES ═══════════ -->
+  <section id="features" class="relative py-20 md:py-28 bg-gradient-to-b from-white to-orange-50/30">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-16 lg:grid-cols-2">
+        <div>
+          <span class="inline-flex items-center gap-2 rounded-full bg-green-50 px-4 py-2 text-sm font-semibold text-green-600">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Что мы предлагаем
+          </span>
+          <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
+            Наш <span class="gradient-text-orange">15-летний опыт</span> + ваши пожелания
+          </h2>
+          <p class="mt-4 text-lg text-slate-600">
+            Мы объединяем реальный опыт в строительстве с современными технологиями, чтобы создать по-настоящему полезный инструмент.
+          </p>
+          <div class="mt-8 space-y-5">
+            <div class="flex items-start gap-4">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <p class="pt-1.5 text-slate-700">15 лет реального опыта в строительстве, заложенного в логику приложения</p>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
+              <p class="pt-1.5 text-slate-700">Доступ к тестированию приложения на этапе разработки</p>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <p class="pt-1.5 text-slate-700">Бесплатное пользование приложением по окончании тестирования</p>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <p class="pt-1.5 text-slate-700">Учёт ваших конкретных пожеланий и болей при разработке</p>
+            </div>
+          </div>
+        </div>
+        <!-- Phone mockup -->
+        <div class="flex justify-center">
+          <div class="relative">
+            <div class="absolute -inset-4 rounded-[3rem] bg-gradient-to-br from-orange-400/20 to-amber-400/20 blur-2xl"></div>
+            <div class="relative w-72 rounded-[2.5rem] border-[8px] border-slate-800 bg-slate-900 p-1 shadow-2xl sm:w-80">
+              <div class="absolute left-1/2 top-4 h-6 w-24 -translate-x-1/2 rounded-full bg-slate-800"></div>
+              <div class="overflow-hidden rounded-[2rem] bg-gradient-to-b from-orange-50 to-white">
+                <div class="bg-gradient-to-r from-orange-500 to-amber-500 px-5 pb-5 pt-10">
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a6 6 0 0 1 6-6h0"/><path d="M14 6a6 6 0 0 1 6 6v3"/></svg>
+                    </div>
+                    <div>
+                      <p class="text-xs text-orange-100">Добро пожаловать</p>
+                      <p class="text-sm font-bold text-white">СтройконтрольИмастер</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="space-y-3 p-4">
+                  <div class="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+                      <span class="text-xs font-medium text-slate-700">Операционный контроль</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="flex h-5 w-5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white">3</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                      <span class="text-xs font-medium text-slate-700">Учёт инструмента</span>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                  </div>
+                  <div class="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+                      <span class="text-xs font-medium text-slate-700">Материалы и заявки</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="flex h-5 w-5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white">5</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                      <span class="text-xs font-medium text-slate-700">Документация</span>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                  </div>
+                  <div class="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                      <span class="text-xs font-medium text-slate-700">Координация</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="flex h-5 w-5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white">2</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ═══════════ PARTICIPATION ═══════════ -->
+  <section id="participate" class="relative py-20 md:py-28 bg-gradient-to-b from-orange-50/30 to-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <span class="inline-flex items-center gap-2 rounded-full bg-violet-50 px-4 py-2 text-sm font-semibold text-violet-600">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Приглашение
+        </span>
+        <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+          Примите <span class="gradient-text-violet">участие</span> в разработке
+        </h2>
+        <p class="mx-auto mt-4 max-w-3xl text-lg text-slate-600">
+          Руководители строительных организаций и технадзоров — поделитесь с нами всей своей «болью». Ваш опыт поможет создать по-настоящему полезное приложение.
+        </p>
+      </div>
+      <div class="mt-16 grid gap-6 md:grid-cols-2">
+        <!-- From You -->
+        <div class="relative overflow-hidden rounded-3xl border border-orange-100 bg-gradient-to-br from-orange-50 to-amber-50 p-8 md:p-10">
+          <div class="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-orange-200/30 blur-2xl"></div>
+          <div class="relative">
+            <div class="mb-6 inline-flex items-center gap-2 rounded-full bg-orange-100 px-4 py-2 text-sm font-semibold text-orange-700">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+              От вас
+            </div>
+            <ul class="space-y-4">
+              <li class="flex items-start gap-3"><div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div><span class="text-sm text-slate-700 md:text-base">Поделитесь всей «болью» в процессе строительства</span></li>
+              <li class="flex items-start gap-3"><div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div><span class="text-sm text-slate-700 md:text-base">Расскажите о проблемах с регламентами и предписаниями</span></li>
+              <li class="flex items-start gap-3"><div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div><span class="text-sm text-slate-700 md:text-base">Опишите сложности учёта материалов и инструмента</span></li>
+              <li class="flex items-start gap-3"><div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div><span class="text-sm text-slate-700 md:text-base">Укажите проблемы с документацией и совещаниями</span></li>
+              <li class="flex items-start gap-3"><div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div><span class="text-sm text-slate-700 md:text-base">Всё, что считаете нужным оцифровать</span></li>
+            </ul>
+          </div>
+        </div>
+        <!-- From Us -->
+        <div class="relative overflow-hidden rounded-3xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50 p-8 md:p-10">
+          <div class="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-emerald-200/30 blur-2xl"></div>
+          <div class="relative">
+            <div class="mb-6 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-700">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              От нас
+            </div>
+            <ul class="space-y-4">
+              <li class="flex items-start gap-3"><div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="text-sm text-slate-700 md:text-base">15 лет опыта в строительстве + ваши пожелания</span></li>
+              <li class="flex items-start gap-3"><div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="text-sm text-slate-700 md:text-base">Доступ к тестированию приложения</span></li>
+              <li class="flex items-start gap-3"><div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="text-sm text-slate-700 md:text-base">Бесплатное пользование после завершения теста</span></li>
+              <li class="flex items-start gap-3"><div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="text-sm text-slate-700 md:text-base">Приложение уже в активной разработке</span></li>
+              <li class="flex items-start gap-3"><div class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><span class="text-sm text-slate-700 md:text-base">Удобный помощник для мастеров, прорабов и бригадиров</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ═══════════ QUOTE ═══════════ -->
+  <section class="relative overflow-hidden bg-gradient-to-r from-orange-500 to-amber-500 py-16 md:py-20">
+    <div class="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      </div>
+      <blockquote class="text-xl font-bold leading-relaxed text-white sm:text-2xl md:text-3xl">
+        «Когда всё держится на одном человеке на объекте — это не система. Заболел, уволился, ушёл в отпуск, выгорел — и все "головняки" на директоре или руководителях, а им надо заниматься своей работой.»
+      </blockquote>
+      <div class="mt-8">
+        <a href="#contact" class="group inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-4 text-lg font-bold text-orange-600 shadow-2xl shadow-orange-600/20 transition-all hover:-translate-y-1">
+          Давайте это изменим
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+  <!-- ═══════════ CONTACT FORM ═══════════ -->
+  <section id="contact" class="relative py-20 md:py-28 bg-gradient-to-b from-white to-slate-50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <span class="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          Связаться
+        </span>
+        <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+          Отправьте <span class="gradient-text-orange">сообщение</span>
+        </h2>
+        <p class="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
+          Заполните форму — мы свяжемся с вами для обсуждения участия в проекте
+        </p>
+      </div>
+      <div class="mx-auto mt-12 max-w-3xl">
+        <!-- Form -->
+        <div id="formContainer">
+          <form id="contactForm" class="rounded-3xl border border-slate-100 bg-white p-8 shadow-xl shadow-slate-100/50 md:p-12">
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div class="sm:col-span-2">
+                <label class="mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+                  Название организации
+                </label>
+                <input type="text" name="org" required class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:bg-white" placeholder="Название организации" />
+              </div>
+              <div>
+                <label class="mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  ФИО контактного лица
+                </label>
+                <input type="text" name="name" required class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:bg-white" placeholder="ФИО контактного лица" />
+              </div>
+              <div>
+                <label class="mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  Телефон (ТГ или WhatsApp)
+                </label>
+                <input type="text" name="phone" required class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:bg-white" placeholder="Телефон для связи" />
+              </div>
+              <div>
+                <label class="mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Город
+                </label>
+                <input type="text" name="city" required class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:bg-white" placeholder="Город" />
+              </div>
+              <div>
+                <label class="mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a6 6 0 0 1 6-6h0"/><path d="M14 6a6 6 0 0 1 6 6v3"/></svg>
+                  Вид деятельности
+                </label>
+                <input type="text" name="activity" required class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:bg-white" placeholder="Вид деятельности" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
+                  Ваше сообщение / описание проблем
+                </label>
+                <textarea name="message" rows="5" class="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:bg-white" placeholder="Расскажите о вашей «боли» в строительных процессах, какие задачи нужно оцифроват��..."></textarea>
+              </div>
+            </div>
+            <button type="submit" id="submitBtn" class="group mt-6 flex w-full items-center justify-center gap-2 rounded-2xl btn-primary px-8 py-4 text-lg font-bold text-white shadow-xl shadow-orange-200 transition-all hover:shadow-2xl hover:shadow-orange-300 hover:-translate-y-0.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+              <span id="submitText">Отправить сообщение</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+            <p class="mt-4 text-center text-xs text-slate-400">
+              Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
+            </p>
+          </form>
+        </div>
+        <!-- Success message (hidden) -->
+        <div id="successMessage" class="hidden rounded-3xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50 p-12 text-center">
+          <div class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 shadow-xl shadow-emerald-200">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3 class="text-2xl font-bold text-slate-900">Спасибо за обращение!</h3>
+          <p class="mt-3 text-slate-600">Мы свяжемся с вами в ближайшее время для обсуждения деталей участия в проекте.</p>
+          <button onclick="resetForm()" class="mt-6 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-200 transition-all hover:-translate-y-0.5">
+            Отправить ещё
+          </button>
+        </div>
+        <!-- Direct contacts -->
+        <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-8">
+          <a href="mailto:timurshingareev@gmail.com" class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white px-6 py-4 shadow-sm transition-all hover:shadow-lg hover:border-orange-200 hover:-translate-y-0.5">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-slate-400">Электронная почта</p>
+              <p class="text-sm font-semibold text-slate-800 group-hover:text-orange-600 transition-colors">timurshingareev@gmail.com</p>
+            </div>
+          </a>
+          <a href="https://t.me/tshingareev" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white px-6 py-4 shadow-sm transition-all hover:shadow-lg hover:border-orange-200 hover:-translate-y-0.5">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-blue-500 text-white shadow-lg shadow-sky-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-slate-400">Telegram</p>
+              <p class="text-sm font-semibold text-slate-800 group-hover:text-sky-600 transition-colors">@tshingareev</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="border-t border-slate-100 bg-slate-900 py-12">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col items-center gap-8 md:flex-row md:justify-between">
+        <div class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a6 6 0 0 1 6-6h0"/><path d="M14 6a6 6 0 0 1 6 6v3"/></svg>
+          </div>
+          <div>
+            <span class="gradient-text-orange text-lg font-extrabold">Стройконтроль</span><span class="gradient-text-amber text-lg font-extrabold">Имастер</span>
+          </div>
+        </div>
+        <div class="flex flex-col items-center gap-3 sm:flex-row sm:gap-6">
+          <a href="mailto:timurshingareev@gmail.com" class="flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-orange-400">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span>timurshingareev@gmail.com</span>
+          </a>
+          <a href="https://t.me/tshingareev" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-orange-400">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+            <span>@tshingareev</span>
+          </a>
+        </div>
+      </div>
+      <div class="mt-8 border-t border-slate-800 pt-6 text-center text-sm text-slate-500">
+        © <script>document.write(new Date().getFullYear())</script> СтройконтрольИмастер. Приложение в разработке. Все права защищены.
+      </div>
+    </div>
+  </footer>
+  <!-- ═══════════ JAVASCRIPT ═══════════ -->
+  <script>
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      var header = document.getElementById('header');
+      if (window.scrollY > 40) {
+        header.classList.add('bg-white/90', 'shadow-lg', 'shadow-slate-100/50', 'backdrop-blur-xl');
+        header.classList.remove('bg-transparent');
+      } else {
+        header.classList.remove('bg-white/90', 'shadow-lg', 'shadow-slate-100/50', 'backdrop-blur-xl');
+        header.classList.add('bg-transparent');
+      }
+    }, { passive: true });
+    // Mobile menu
+    function toggleMobileMenu() {
+      var menu = document.getElementById('mobileMenu');
+      var menuIcon = document.getElementById('menuIcon');
+      var closeIcon = document.getElementById('closeIcon');
+      menu.classList.toggle('hidden');
+      menuIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    }
+    function closeMobileMenu() {
+      var menu = document.getElementById('mobileMenu');
+      var menuIcon = document.getElementById('menuIcon');
+      var closeIcon = document.getElementById('closeIcon');
+      menu.classList.add('hidden');
+      menuIcon.classList.remove('hidden');
+      closeIcon.classList.add('hidden');
+    }
+    // Animated counters
+    var counters = document.querySelectorAll('.counter');
+    var counterObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var target = parseInt(el.dataset.target);
+          var suffix = el.dataset.suffix;
+          var current = 0;
+          var step = target / 120;
+          var timer = setInterval(function() {
+            current += step;
+            if (current >= target) {
+              el.textContent = target + suffix;
+              clearInterval(timer);
+            } else {
+              el.textContent = Math.floor(current) + suffix;
+            }
+          }, 16);
+          counterObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(function(c) { counterObserver.observe(c); });
+    // Pain cards reveal
+    var painCards = document.querySelectorAll('.pain-card');
+    var cardObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+    painCards.forEach(function(card, i) {
+      card.style.transitionDelay = (i * 80) + 'ms';
+      cardObserver.observe(card);
+    });
+    // Form submission via FormSubmit.co (sends email to timurshingareev@gmail.com)
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var form = e.target;
+      var btn = document.getElementById('submitBtn');
+      var submitText = document.getElementById('submitText');
+      var org = form.org.value.trim();
+      var name = form.name.value.trim();
+      var phone = form.phone.value.trim();
+      var city = form.city.value.trim();
+      var activity = form.activity.value.trim();
+      var message = form.message.value.trim();
+      // Disable button
+      btn.disabled = true;
+      btn.classList.add('opacity-70');
+      submitText.textContent = 'Отправка...';
+      var mailtoSubject = encodeURIComponent('Заявка СтройконтрольИмастер — ' + org);
+      var mailtoBody = encodeURIComponent(
+        'Новая заявка с сайта СтройконтрольИмастер\n\n' +
+        'Организация: ' + org + '\n' +
+        'ФИО: ' + name + '\n' +
+        'Телефон: ' + phone + '\n' +
+        'Город: ' + city + '\n' +
+        'Вид деятельности: ' + activity + '\n' +
+        (message ? '\nСообщение:\n' + message : '')
+      );
+      var sent = false;
+      // Try sending via FormSubmit (free email service, no signup)
+      try {
+        var response = await fetch('https://formsubmit.co/ajax/timurshingareev@gmail.com', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            _subject: 'Заявка СтройконтрольИмастер — ' + org,
+            'Организация': org,
+            'ФИО': name,
+            'Телефон': phone,
+            'Город': city,
+            'Вид деятельности': activity,
+            'Сообщение': message || '(не указано)'
+          })
+        });
+        if (response.ok) {
+          sent = true;
+        }
+      } catch (err) {
+        console.log('FormSubmit failed, using mailto fallback');
+      }
+      if (!sent) {
+        // Fallback: open email client
+        window.location.href = 'mailto:timurshingareev@gmail.com?subject=' + mailtoSubject + '&body=' + mailtoBody;
+      }
+      // Show success
+      document.getElementById('formContainer').classList.add('hidden');
+      document.getElementById('successMessage').classList.remove('hidden');
+      // Re-enable button
+      btn.disabled = false;
+      btn.classList.remove('opacity-70');
+      submitText.textContent = 'Отправить сообщение';
+    });
+    function resetForm() {
+      document.getElementById('formContainer').classList.remove('hidden');
+      document.getElementById('successMessage').classList.add('hidden');
+      document.getElementById('contactForm').reset();
+    }
+  </script>
+</body>
 </html>
