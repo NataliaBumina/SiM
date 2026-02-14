@@ -8,9 +8,28 @@
   </head>
   <body>
         <img src="./logotip.jpg" alt="Логотип СтройконтрольМастер" style="width: 200px; height: auto; margin: 20px 0;" />
-    <div id="root"></div>
-<script type="module" src="/src/main.tsx"></script>     
-    <div style="margin-top: 40px; padding: 20px; background-color: #f5f5f5; border-radius: 8px; text-align: center;">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script>
+      const e = React.createElement;
+      const App = () => {
+        return e('div', { style: { fontFamily: 'Arial, sans-serif', maxWidth: '1200px', margin: '0 auto', padding: '20px' } },
+          e('h1', { style: { color: '#333', marginTop: '20px' } }, 'Любите Конструкторы!'),
+          e('p', { style: { fontSize: '18px', color: '#666', lineHeight: '1.6' } }, 'Открыть свое воображение и строите замечательные дома!'),
+          e('div', { style: { backgroundColor: '#f0f0f0', padding: '20px', borderRadius: '8px', marginTop: '30px' } },
+            e('h2', null, 'Наши основные действия:'),
+            e('ul', null,
+              e('li', null, 'Дизайн и расставка'),
+              e('li', null, 'Планирование проекта'),
+              e('li', null, 'Набор трудов'),
+              e('li', null, 'Надзор качества')
+            )
+          )
+        );
+      };
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(e(App));
+    </script><div style="margin-top: 40px; padding: 20px; background-color: #f5f5f5; border-radius: 8px; text-align: center;">
       <h2>Контакты</h2>
       <p><strong>Электронная почта:</strong> <a href="mailto:timurshingareev@gmail.com">timurshingareev@gmail.com</a></p>
       <p><strong>Telegram:</strong> <a href="https://t.me/tshingareev" target="_blank">@tshingareev</a></p>
