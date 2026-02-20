@@ -736,57 +736,9 @@
       // Disable button
       btn.disabled = true;
       btn.classList.add('opacity-70');
-      submitText.textContent = 'Отправка...';
-      var mailtoSubject = encodeURIComponent('Заявка СтройконтрольИмастер — ' + org);
-      var mailtoBody = encodeURIComponent(
-        'Новая заявка с сайта СтройконтрольИмастер\n\n' +
-        'Организация: ' + org + '\n' +
-        'ФИО: ' + name + '\n' +
-        'Телефон: ' + phone + '\n' +
-        'Город: ' + city + '\n' +
-        'Вид деятельности: ' + activity + '\n' +
-        (message ? '\nСообщение:\n' + message : '')
-      );
-      var sent = false;
-      // Try sending via FormSubmit (free email service, no signup)
-      try {
-        var response = await fetch('https://formsubmit.co/ajax/timurshingareev@gmail.com', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({
-            _subject: 'Заявка СтройконтрольИмастер — ' + org,
-            'Организация': org,
-            'ФИО': name,
-            'Телефон': phone,
-            'Город': city,
-            'Вид деятельности': activity,
-          })
-        });
-        if (response.ok) {
-          sent = true;
-        }
-      } catch (err) {
-        console.log('FormSubmit failed, using mailto fallback');
-      }
-      if (!sent) {
-        // Fallback: open email client
-        window.location.href = 'mailto:timurshingareev@gmail.com?subject=' + mailtoSubject + '&body=' + mailtoBody;
-      }
-      // Show success
-      document.getElementById('formContainer').classList.add('hidden');
-      document.getElementById('successMessage').classList.remove('hidden');
-      // Re-enable button
-      btn.disabled = false;
-      btn.classList.remove('opacity-70');
-      submitText.textContent = 'Отправить сообщение';
+     
     });
-    function resetForm() {
-      document.getElementById('formContainer').classList.remove('hidden');
-      document.getElementById('successMessage').classList.add('hidden');
-      document.getElementById('contactForm').reset();
+  
     }
   </script>
 </body>
