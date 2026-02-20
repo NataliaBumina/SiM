@@ -233,6 +233,31 @@
         </h2>
         <p class="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
           Когда всё держится на «одном» человеке — это не система. Заболел, уволился, ушёл в отпуск — и все «головняки» на директоре.
+          {/* Problems Section */}
+<section id="problems" className="py-20 bg-gray-900">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-16">
+      <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        Знакомы <span className="text-orange-500">проблемы</span>?
+      </h2>
+      <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+        Поделитесь с нами своей «болью» — мы оцифруем хаос
+      </p>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[
+        { icon: <FileText className="w-6 h-6" />, title: "Регламент", desc: "Как выполняется регламент сотрудниками? Есть ли контроль?" },
+        { icon: <AlertTriangle className="w-6 h-6" />, title: "Предписания", desc: "Какова реакция на предписания? Исполняются ли в срок?" },
+        { icon: <Package className="w-6 h-6" />, title: "Учёт материалов", desc: "Учёт выдачи расходников и основного материала — ведётся ли?" },
+        { icon: <TrendingUp className="w-6 h-6" />, title: "Лимитки", desc: "Своевременны ли заявки и нет ли перерасхода согласно лимиткам?" },
+        { icon: <FolderOpen className="w-6 h-6" />, title: "Документация", desc: "Своевременность и укомплектованность исполнительной документации?" },
+        { icon: <MessageSquare className="w-6 h-6" />, title: "Совещания", desc: "Ведётся ли протокол оперативных совещаний?" },
+        { icon: <CheckCircle className="w-6 h-6" />, title: "Задачи", desc: "Выполняются ли задачи по итогам оперативного совещания?" },
+        { icon: <Clock className="w-6 h-6" />, title: "Время", desc: "Исполняется ли временной регламент сотрудниками?" },
+        { icon: <Shield className="w-6 h-6" />, title: "Договор", desc: "Соблюдаются ли пункты из договора при взаимодействии с Заказчиком?" },
+        { icon: <MapPin className="w-6 h-6" />, title: "Геодезия", desc: "Своевременна ли работа геодезиста?" },
+        { icon: <Settings className="w-6 h-6" />, title: "Контроль", desc: "Какие проблемы в операционном контроле?" },
+        { icon: <HardHat className="w-6 h-6" />, title: "И многое другое", desc: "Всё, что считаете нужным, чтоб мы оцифровали «хаос»" },
         </p>
       </div>
       <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="painCards">
